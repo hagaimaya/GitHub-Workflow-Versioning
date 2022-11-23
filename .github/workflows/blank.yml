@@ -72,7 +72,8 @@ jobs:
           $version = Get-CurrentVersion
           write-host "Current Version is: $version"
           $newVersion = Get-NewVersion $version  
-          $newVersion
+          "Version=$newVersion" >> $env:GITHUB_OUTPUT
+          exit 0
         
           
       - name: echo version

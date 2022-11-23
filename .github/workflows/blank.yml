@@ -31,7 +31,7 @@ jobs:
         shell: pwsh
         run: |
           cd $env:GITHUB_WORKSPACE
-          ls
+          Get-ChildItem -Hidden
           function Get-CurrentVersion {
           [CmdletBinding()]
           param ()

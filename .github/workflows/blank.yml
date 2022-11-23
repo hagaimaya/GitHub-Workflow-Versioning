@@ -72,7 +72,7 @@ jobs:
           $version = Get-CurrentVersion
           write-host "Current Version is: $version"
           $newVersion = Get-NewVersion $version  
-          write-host "new Version is: $newVersion"
+          $newVersion
         
           
       - name: echo version

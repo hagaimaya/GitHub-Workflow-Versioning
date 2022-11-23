@@ -32,6 +32,7 @@ jobs:
         run: |
           cd $env:GITHUB_WORKSPACE
           Get-ChildItem -Hidden
+          git tag --list
           function Get-CurrentVersion {
           [CmdletBinding()]
           param ()

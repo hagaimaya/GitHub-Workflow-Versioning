@@ -73,7 +73,7 @@ jobs:
           write-host "Current Version is: $version"
           $newVersion = Get-NewVersion $version  
           write-host "new Version is: $newVersion"
-          #"Version=$newVersion" >> $env:GITHUB_OUTPUT
+        
           
       - name: echo version
         run: echo ${{ steps.CalculateVersion.outputs.Version }}

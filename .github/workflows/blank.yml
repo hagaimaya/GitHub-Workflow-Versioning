@@ -67,29 +67,13 @@ jobs:
               }
               return $newVersion
           }
-
-          function Get-Tag {
-              [CmdletBinding()]
-              param (
-                  [string]
-                  $Version,
-
-                  [string]
-                  $Environment
-              )
-              $tag = $Version 
-              if ($Environment) {
-                  $tag = "{0}-{1}" -f $Version, $Environment
-              }
-
-              return $tag
-          }
+          
           write-host "Get Current Version:
           $version = Get-CurrentVersion
           write-host "Current Version is: $version"
           $newVersion = Get-NewVersion $version  
           write-host "new Version is: $newVersion"
-          "Version=$newVersion" >> $env:GITHUB_OUTPUT
+          #"Version=$newVersion" >> $env:GITHUB_OUTPUT
           
       - name: echo version
         run: echo ${{ steps.CalculateVersion.outputs.Version }}

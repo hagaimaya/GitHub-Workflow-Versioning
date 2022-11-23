@@ -34,7 +34,7 @@ jobs:
           [CmdletBinding()]
           param ()
           $latestTag = git describe --tags
-          write-host "continues"
+          
           $version = [string]::Empty
           if ($latestTag) {
               $version = $latestTag.split('-')[0]
@@ -84,9 +84,11 @@ jobs:
 
               return $tag
           }
+          write-host "Get Current Version:
           $version = Get-CurrentVersion
+          write-host "Current Version is: $version"
           $newVersion = Get-NewVersion $version  
-         
+          write-host "new Version is: $newVersion"
           "Version=$newVersion" >> $env:GITHUB_OUTPUT
           
       - name: echo version

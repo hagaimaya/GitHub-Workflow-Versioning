@@ -34,6 +34,7 @@ jobs:
           [CmdletBinding()]
           param ()
           $latestTag = git describe --tags
+          write-host "continues"
           $version = [string]::Empty
           if ($latestTag) {
               $version = $latestTag.split('-')[0]

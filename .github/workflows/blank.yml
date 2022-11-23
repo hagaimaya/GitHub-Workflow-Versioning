@@ -19,23 +19,76 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    outputs:
+      version: ${{ steps.CalculateVersion.outputs.Version }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      
+      - name: Calculate Version
+        id: CalculateVersion
+        shell: pwsh
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          git tag test
-          git push
+          function Get-CurrentVersion {
+          [CmdletBinding()]
+          param ()
+          $latestTag = git describe --tags
+          $version = [string]::Empty
+          if ($latestTag) {
+              $version = $latestTag.split('-')[0]
+          }
+            return $version
+          }
+          function Get-NewVersion {
+              [CmdletBinding()]
+              param (
+                  [string]
+                  $Version
+              )
+
+              $currentDate = Get-Date -Format yyyyMMdd
+              $newVersion = $currentDate
+              if ($Version -eq [string]::Empty) {
+                  $newVersion = "{0}.{1}" -f $currentDate, 1
+              }
+              else {
+                  $oldVersionDate = $Version.split('.')[0]
+                  if ($currentDate -eq $oldVersionDate) {
+                      $oldVersionNumber = [int]($Version.split('.')[1])
+                      $newVersionNumber = $oldVersionNumber + 1 
+
+                      $newVersion = "{0}.{1}" -f $currentDate, $newVersionNumber
+                  }
+                  else {
+                      $newVersion = "{0}.{1}" -f $currentDate, 1
+                  }
+              }
+              return $newVersion
+          }
+
+          function Get-Tag {
+              [CmdletBinding()]
+              param (
+                  [string]
+                  $Version,
+
+                  [string]
+                  $Environment
+              )
+              $tag = $Version 
+              if ($Environment) {
+                  $tag = "{0}-{1}" -f $Version, $Environment
+              }
+
+              return $tag
+          }
+          $version = Get-CurrentVersion
+          $newVersion = Get-NewVersion $version  
+          Write-Output "::set-output name=Version::$newVersion"
+          
+      - name: echo version
+        run: echo ${{ steps.CalculateVersion.outputs.Version }}
       
       - name: GitHub Script
         uses: actions/github-script@v6.3.3
@@ -45,7 +98,7 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/test',
+              ref: 'refs/tags/${{steps.CalculateVersion.outputs.Version}}',
               sha: context.sha
             })
          

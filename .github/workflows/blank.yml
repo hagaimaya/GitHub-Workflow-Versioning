@@ -68,7 +68,7 @@ jobs:
               return $newVersion
           }
           
-          write-host "Get Current Version:
+          write-host "Get Current Version:"
           $version = Get-CurrentVersion
           write-host "Current Version is: $version"
           $newVersion = Get-NewVersion $version  

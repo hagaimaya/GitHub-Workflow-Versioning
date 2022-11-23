@@ -36,3 +36,17 @@ jobs:
           echo test, and deploy your project.
           git tag test
           git push
+      
+      - name: GitHub Script
+        uses: actions/github-script@v6.3.3
+        with:
+          # The script to run
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/test',
+              sha: context.sha
+            })
+         
+         

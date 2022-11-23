@@ -85,7 +85,8 @@ jobs:
           }
           $version = Get-CurrentVersion
           $newVersion = Get-NewVersion $version  
-          Write-Output "::set-output name=Version::$newVersion"
+         
+          "Version=$newVersion" >> $env:GITHUB_OUTPUT
           
       - name: echo version
         run: echo ${{ steps.CalculateVersion.outputs.Version }}

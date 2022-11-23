@@ -30,6 +30,7 @@ jobs:
         id: CalculateVersion
         shell: pwsh
         run: |
+          cd $env:GITHUB_WORKSPACE
           function Get-CurrentVersion {
           [CmdletBinding()]
           param ()

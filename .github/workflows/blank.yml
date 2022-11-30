@@ -36,7 +36,9 @@ jobs:
           echo revlist latest -------------------------
           git rev-list --tags --max-count=1
           echo describe-----------------------------
-          git describe --tags `git rev-list --tags --max-count=1`
+          $currentDate = Get-Date -Format yyyyMMdd
+          $tagFormat = "{0}.*" -f  $currentDate
+          git tag -l --sort=v:refname  $tagFormat 
           echo -------------------------------------------
       - name: Calculate Version
         id: CalculateVersion

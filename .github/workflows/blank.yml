@@ -41,11 +41,14 @@ jobs:
           function Get-CurrentVersion {
           [CmdletBinding()]
           param ()
-          $latestTag = git describe --tags $(git rev-list --tags --max-count=1)
           
+          $currentDate = Get-Date -Format yyyyMMdd
+          $tagFormat = "{0}.*" -f  $currentDate
+          $tags = git tag -l --sort=v:refname  $tagFormat 
+         
           $version = [string]::Empty
-          if ($latestTag) {
-              $version = $latestTag.split('-')[0]
+          if ($tags) {
+              $version = $tags[-1].split('-')[0]
           }
             return $version
           }

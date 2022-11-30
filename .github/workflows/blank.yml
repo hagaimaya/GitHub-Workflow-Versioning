@@ -29,7 +29,11 @@ jobs:
           fetch-depth: 0
       - name: git tag list 
         run: |
-          git describe --tags
+          echo fetch--------------
+          git fetch
+          echo describe-----------------------------
+          git describe --tags `git rev-list --tags --max-count=1`
+          echo -------------------------------------------
       - name: Calculate Version
         id: CalculateVersion
         shell: pwsh

@@ -27,19 +27,13 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: git tag list 
+      - name: describe
+        shell: pwsh
         run: |
-          echo fetch--------------
-          git fetch
-          echo revlist--------------------------------
-          git rev-list --tags
-          echo revlist latest -------------------------
-          git rev-list --tags --max-count=1
           echo describe-----------------------------
           $currentDate = Get-Date -Format yyyyMMdd
           $tagFormat = "{0}.*" -f  $currentDate
           git tag -l --sort=v:refname  $tagFormat 
-          echo -------------------------------------------
       - name: Calculate Version
         id: CalculateVersion
         shell: pwsh

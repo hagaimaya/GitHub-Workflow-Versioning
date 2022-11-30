@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master" ]
+    branches: [ "master", "hagai ]
   pull_request:
     branches: [ "master" ]
 
@@ -33,6 +33,8 @@ jobs:
           git fetch
           echo revlist--------------------------------
           git rev-list --tags
+          echo revlist latest -------------------------
+          git rev-list --tags --max-count=1
           echo describe-----------------------------
           git describe --tags `git rev-list --tags --max-count=1`
           echo -------------------------------------------

@@ -37,7 +37,7 @@ jobs:
           function Get-CurrentVersion {
           [CmdletBinding()]
           param ()
-          $latestTag = git describe --tags
+          $latestTag = git describe --tags $(git rev-list --tags --max-count=1)
           
           $version = [string]::Empty
           if ($latestTag) {
